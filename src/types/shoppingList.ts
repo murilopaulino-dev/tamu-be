@@ -8,9 +8,7 @@ export type ShoppingList = {
   id: number;
   name: string;
   status: ShoppingListStatus;
-  isActive: boolean;
-  createdById: number;
-  updatedById: number;
+  companyId: number;
 };
 
 export type CreateShoppingListRequest = {

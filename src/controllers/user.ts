@@ -29,6 +29,7 @@ export const createUser = async (req: Request<{}, {}, CreateUserRequest>, res: R
       name,
       email,
       type,
+      companyId: req.company?.id as number,
       isActive: true,
       createdById: userId,
       updatedById: userId,
@@ -52,7 +53,10 @@ export const createUser = async (req: Request<{}, {}, CreateUserRequest>, res: R
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const response = await UserModel.findAll({
-      where: { isActive: true }
+      where: {
+        companyId: req.company?.id,
+        isActive: true
+      }
     });
     const users = [];
     for (let i = 0; i < response.length; i++) {

@@ -7,14 +7,12 @@ import { formatCNPJ } from '../utils/company';
 
 export const getCompany = async (req: Request, res: Response) => {
   try {
-    const companies = await CompanyModel.findAll();
-    const company = companies?.[0];
-    return res.status(201).json({
+    return {
       success: true,
       data: {
-        company: company?.get(),
+        company: req.company?.get(),
       }
-    });
+    }
   } catch (error) {
     console.error('Error getting company:', error);
     return res.status(500).json({

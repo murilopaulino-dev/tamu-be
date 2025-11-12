@@ -4,8 +4,6 @@ export type ProductPurchasePrice = {
   price: number;
   date: Date;
   productId: number;
-  createdById: number;
-  updatedById: number;
 }
 
 export type CreateProductPurchasePriceRequest = {

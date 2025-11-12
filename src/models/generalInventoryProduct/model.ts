@@ -18,8 +18,8 @@ class GeneralInventoryProductModel extends BaseModel<GeneralInventoryProductType
   public readonly product!: ProductModel;
   public readonly generalInventory!: GeneralInventoryModel;
 
-  public checkPermission = async (companyId: number) => {
-    return this.id === companyId;
+  public async checkPermission(companyId: number) {
+    return this.product.companyId === companyId;
   }
 };
 

@@ -11,6 +11,10 @@ class CompanyModel extends BaseModel<CompanyModelType, Optional<CompanyModelType
   public name!: string;
   public email!: string;
   public cnpj!: string;
+
+  public async checkPermission(companyId: number) {
+    return this.id === companyId;
+  }
 };
 
 CompanyModel.init(

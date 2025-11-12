@@ -7,6 +7,8 @@ import { createCompanyValidator } from '../validators/company';
 
 const router = express.Router();
 
+router.use(authenticateUser());
+
 /**
  * @swagger
  * /api/companies/create:
@@ -70,11 +72,8 @@ router.post(
  *       500:
  *         description: Internal server error
  */
-router.get('/:companyId', authenticateUser(), getCompany);
+router.get('/', getCompany);
 
-router.get(
-  '/:companyId/modules',
-  getCompanyModules
-);
+router.get('/modules', getCompanyModules);
 
 export default router;

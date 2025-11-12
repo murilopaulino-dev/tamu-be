@@ -9,6 +9,11 @@ class GeneralInventoryModel extends BaseModel<GeneralInventoryType, Optional<Gen
   implements GeneralInventoryType {
   public id!: number;
   public name!: string;
+  public companyId!: number;
+
+  public async checkPermission(companyId: number) {
+    return this.companyId === companyId;
+  }
 };
 
 GeneralInventoryModel.init(
@@ -21,6 +26,14 @@ GeneralInventoryModel.init(
     name: {
       type: new DataTypes.STRING(128),
       allowNull: false,
+    },
+    companyId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'company',
+        key: 'id',
+      },
     },
     ...BASE_MODEL_INIT_COLUMNS
   },

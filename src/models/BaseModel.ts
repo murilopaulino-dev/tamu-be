@@ -1,8 +1,13 @@
 import { DataTypes, Model, ModelStatic } from "sequelize";
 import InternalUserModel from "./internalUser/model";
 
+export interface PermissionCheckable {
+  checkPermission(companyId: number): Promise<boolean>;
+}
+
 export abstract class BaseModel<TModelAttributes extends {} = any, TCreationAttributes extends {} = TModelAttributes>
-  extends Model<TModelAttributes, TCreationAttributes> {
+  extends Model<TModelAttributes, TCreationAttributes>
+  implements PermissionCheckable {
   public isActive!: boolean;
   public createdById!: number;
   public updatedById!: number;
@@ -15,6 +20,7 @@ export abstract class BaseModel<TModelAttributes extends {} = any, TCreationAttr
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
   public readonly deletedAt?: Date;
+  public abstract checkPermission(companyId: number): Promise<boolean>;
 }
 
 export interface BaseModelStatic<M extends BaseModel> extends ModelStatic<M> { }
@@ -44,7 +50,7 @@ export const BASE_MODEL_INIT_COLUMNS = {
   deletedById: {
     type: DataTypes.INTEGER,
     references: {
-      model: 'users',
+      model: 'internal_users',
       key: 'id',
     },
   },
@@ -52,7 +58,7 @@ export const BASE_MODEL_INIT_COLUMNS = {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'users',
+      model: 'internal_users',
       key: 'id',
     },
   },
@@ -60,7 +66,7 @@ export const BASE_MODEL_INIT_COLUMNS = {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'users',
+      model: 'internal_users',
       key: 'id',
     },
   },

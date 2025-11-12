@@ -10,6 +10,11 @@ class ShoppingListModel extends BaseModel<ShoppingListType, Optional<ShoppingLis
   public id!: number;
   public name!: string;
   public status!: ShoppingListStatus;
+  public companyId!: number;
+
+  public async checkPermission(companyId: number) {
+    return this.companyId === companyId;
+  }
 };
 
 ShoppingListModel.init(
@@ -26,6 +31,14 @@ ShoppingListModel.init(
     status: {
       type: DataTypes.ENUM(...Object.values(ShoppingListStatus)),
       defaultValue: ShoppingListStatus.CREATED
+    },
+    companyId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'company',
+        key: 'id',
+      },
     },
     ...BASE_MODEL_INIT_COLUMNS
   },

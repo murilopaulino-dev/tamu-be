@@ -8,11 +8,12 @@ export type User = {
   name: string;
   email: string;
   type: UserType;
-  isActive: boolean;
+  companyId: number;
 };
 
 export type CreateUserRequest = {
   name: string;
   email: string;
+  companyId: number;
   type: UserType;
 };

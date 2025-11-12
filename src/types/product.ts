@@ -10,6 +10,7 @@ export enum ProductUnitType {
 export type Product = {
   id: number;
   name: string;
+  companyId: number;
   code?: string;
   barCode?: string;
   basePrice: number;

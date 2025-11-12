@@ -15,6 +15,7 @@ export const createShoppingList = async (req: Request<{}, {}, CreateShoppingList
       name,
       status: ShoppingListStatus.CREATED,
       isActive: true,
+      companyId: req.company?.id as number,
       createdById: userId,
       updatedById: userId,
     });
@@ -94,36 +95,13 @@ export const getShoppingLists = async (req: Request, res: Response) => {
   try {
     const shoppingLists = await ShoppingListModel.findAll({
       where: {
+        companyId: req.company?.id,
         isActive: true,
       },
       include: [{
         model: UserModel,
         as: 'createdBy'
       }]
-    });
-    console.log('shoppingLists', shoppingLists)
-    return res.status(201).json({
-      success: true,
-      data: {
-        shoppingLists: shoppingLists.map(sp => sp.get()),
-      }
-    });
-  } catch (error) {
-    console.log('error', error)
-    return res.status(201).json({
-      success: false,
-      message: 'Erro ao retornar a lista de compras'
-    });
-  }
-}
-
-export const getUserShoppingLists = async (req: Request, res: Response) => {
-  try {
-    const shoppingLists = await ShoppingListModel.findAll({
-      where: {
-        createdById: req.internalUser?.id,
-        isActive: true,
-      },
     });
     console.log('shoppingLists', shoppingLists)
     return res.status(201).json({

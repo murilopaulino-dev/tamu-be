@@ -30,6 +30,10 @@ class InternalUserModel extends Model<UserModelType, Optional<UserModelType, 'id
   public async comparePassword(candidatePassword: string): Promise<boolean> {
     return bcrypt.compare(candidatePassword, this.password);
   }
+
+  public async checkPermission(companyId: number) {
+    return true;
+  }
 };
 
 InternalUserModel.init(

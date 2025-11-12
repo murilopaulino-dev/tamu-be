@@ -2,19 +2,24 @@ import express from "express";
 import { deleteModel } from "../controllers/baseController";
 import { createProduct, getProduct, getProducts } from "../controllers/product";
 import { productImageUpload } from '../controllers/productImage';
+import { authenticateUser, checkCompanyOwnership } from "../middlewares/auth";
 import ProductModel from "../models/product/model";
 import { validateRequest } from "../validators";
 import { createProductValidator } from "../validators/product";
 
 const router = express.Router();
 
+router.use(authenticateUser());
+
 router.delete(
   '/:productId',
+  checkCompanyOwnership(ProductModel, 'productId', 'product'),
   deleteModel(ProductModel, 'productId')
 );
 
 router.get(
   '/:productId',
+  checkCompanyOwnership(ProductModel, 'productId', 'product'),
   getProduct
 );
 
@@ -40,7 +45,11 @@ router.get(
  *       500:
  *         description: Internal server error
  */
-router.post('/:productId/image-upload', productImageUpload);
+router.post(
+  '/:productId/image-upload',
+  checkCompanyOwnership(ProductModel, 'productId', 'product'),
+  productImageUpload
+);
 
 router.post('/create', validateRequest(createProductValidator), createProduct);
 

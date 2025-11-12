@@ -16,6 +16,10 @@ class UserCompanyPermissions extends BaseModel<UserCompanyPermissionsType, UserC
   public nfe!: boolean;
   public supplier!: boolean;
   public finance!: boolean;
+
+  public async checkPermission(companyId: number) {
+    return this.companyId === companyId;
+  }
 }
 
 UserCompanyPermissions.init(

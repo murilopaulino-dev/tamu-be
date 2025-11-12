@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import CompanyModel from "../models/company/model";
 import ProductCategoryModel from "../models/productCategory/model";
-import { CreateProdcutCategoryRequest } from "../types/productCategory";
+import { CreateProductCategoryRequest } from "../types/productCategory";
 
-export const createProductCategory = async (req: Request<{}, {}, CreateProdcutCategoryRequest>, res: Response) => {
+export const createProductCategory = async (req: Request<{}, {}, CreateProductCategoryRequest>, res: Response) => {
   const { name } = req.body;
   const userId = req.internalUser?.id as number;
   try {

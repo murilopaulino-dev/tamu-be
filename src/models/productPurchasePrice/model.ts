@@ -15,6 +15,10 @@ class ProductPurchasePriceModel extends BaseModel<ProductPurchasePriceType, Opti
   public productId!: number;
 
   public readonly product!: ProductModel;
+
+  public async checkPermission(companyId: number) {
+    return this.product.companyId === companyId;
+  }
 };
 
 ProductPurchasePriceModel.init(

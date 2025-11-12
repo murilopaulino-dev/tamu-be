@@ -16,6 +16,10 @@ class CompanyModulesModel extends BaseModel<CompanyModules, CompanyModulesCreati
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  public async checkPermission(companyId: number) {
+    return true;
+  }
 };
 
 CompanyModulesModel.init(

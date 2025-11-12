@@ -17,6 +17,7 @@ export const createProduct = async (req: Request<{}, {}, CreateProductRequest>, 
       barCode,
       categoryId,
       unitType,
+      companyId: req.company?.id as number,
       isActive: true,
       createdById: userId,
       updatedById: userId,
@@ -72,7 +73,10 @@ export const getProduct = async (req: Request, res: Response) => {
 export const getProducts = async (req: Request, res: Response) => {
   try {
     const products = await ProductModel.findAll({
-      where: { isActive: true },
+      where: {
+        isActive: true,
+        companyId: req.company?.id
+      },
       attributes: ['id', 'name'],
       include: [
         { model: ProductCategoryModel, as: 'category' },

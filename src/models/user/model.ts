@@ -1,30 +1,21 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes, Optional } from 'sequelize';
 import sequelize from '../../config/database';
-import { User, UserType } from '../../types/user';
-import { BaseModelType } from '../BaseModel';
-import InternalUserModel from '../internalUser/model';
+import { UserType as TypeOfUser, User } from '../../types/user';
+import { BASE_MODEL_INIT_COLUMNS, BaseModel, BaseModelType } from '../BaseModel';
 
-type UserModelType = Optional<BaseModelType<User>, 'createdById' | 'updatedById'>;
+type UserType = BaseModelType<User>;
 
-class UserModel extends Model<UserModelType, Optional<UserModelType, 'id'>>
-  implements UserModelType {
+class UserModel extends BaseModel<UserType, Optional<UserType, 'id'>>
+  implements UserType {
   public id!: number;
   public name!: string;
   public email!: string;
-  public type!: UserType;
+  public type!: TypeOfUser;
+  public companyId!: number;
 
-  public isActive!: boolean;
-  public createdById?: number;
-  public updatedById?: number;
-  public deletedById?: number;
-
-  public readonly createdBy?: InternalUserModel;
-  public readonly updatedBy?: InternalUserModel;
-  public readonly deletedBy?: InternalUserModel;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
-  public readonly deletedAt?: Date;
+  public checkPermission = async (companyId: number) => {
+    return this.companyId === companyId;
+  }
 };
 
 UserModel.init(
@@ -47,39 +38,19 @@ UserModel.init(
       },
     },
     type: {
-      type: DataTypes.ENUM(...Object.values(UserType)),
+      type: DataTypes.ENUM(...Object.values(TypeOfUser)),
       allowNull: false,
-      defaultValue: UserType.CUSTOMER,
+      defaultValue: TypeOfUser.CUSTOMER,
     },
-    isActive: {
-      type: new DataTypes.BOOLEAN,
+    companyId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: true,
-    },
-    deletedAt: {
-      type: new DataTypes.DATE,
-    },
-    deletedById: {
-      type: DataTypes.INTEGER,
       references: {
-        model: 'users',
+        model: 'companies',
         key: 'id',
       },
     },
-    createdById: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'users',
-        key: 'id',
-      },
-    },
-    updatedById: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'users',
-        key: 'id',
-      },
-    },
+    ...BASE_MODEL_INIT_COLUMNS,
   },
   {
     sequelize,

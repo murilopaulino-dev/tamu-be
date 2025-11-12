@@ -13,7 +13,6 @@ export type InternalUser = {
   email: string;
   password: string;
   role: InternalUserRole;
-  isActive: boolean;
 };
 
 export type LoginRequest = {

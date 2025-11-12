@@ -15,8 +15,13 @@ class ProductModel extends BaseModel<ProductType, Optional<ProductType, 'id'>>
   public basePrice!: number;
   public unitType!: ProductUnitType;
   public categoryId?: number;
+  public companyId!: number;
 
   public readonly category?: ProductCategoryModel;
+
+  public async checkPermission(companyId: number) {
+    return this.companyId === companyId;
+  }
 };
 
 ProductModel.init(
@@ -49,6 +54,14 @@ ProductModel.init(
       type: DataTypes.INTEGER,
       references: {
         model: 'product_categories',
+        key: 'id',
+      },
+    },
+    companyId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'company',
         key: 'id',
       },
     },

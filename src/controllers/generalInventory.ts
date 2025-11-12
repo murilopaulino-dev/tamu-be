@@ -16,6 +16,7 @@ export const createGeneralInventory = async (req: Request<{}, {}, CreateGeneralI
       isActive: true,
       createdById: userId,
       updatedById: userId,
+      companyId: req.company?.id as number,
     });
 
     return res.status(201).json({
@@ -94,6 +95,7 @@ export const getGeneralInventories = async (req: Request, res: Response) => {
   try {
     const generalInventories = await GeneralInventoryModel.findAll({
       where: {
+        companyId: req.company?.id,
         isActive: true,
       },
       include: [{

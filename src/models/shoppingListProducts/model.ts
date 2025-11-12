@@ -18,6 +18,10 @@ class ShoppingListProductsModel extends BaseModel<ShoppingListProductsType, Opti
 
   public readonly product!: ProductModel;
   public readonly shoppingList!: ShoppingListModel;
+
+  public async checkPermission(companyId: number) {
+    return this.shoppingList.companyId === companyId;
+  }
 };
 
 ShoppingListProductsModel.init(

@@ -72,6 +72,14 @@ export const authenticateUser = (allowedSystemRoles?: InternalUserRole[]) => asy
       return permissionDenied(res, 'Failed system role');
     }
 
+    if (companyId) {
+      const company = await CompanyModel.findByPk(companyId);
+      if (!company || !company.isActive) {
+        return permissionDenied(res, 'No company or company not active');
+      }
+      req.company = company;
+    }
+
     req.internalUser = user;
 
     next();

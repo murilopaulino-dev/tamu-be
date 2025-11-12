@@ -5,5 +5,5 @@ export type UserCompanyPermission = {
   userId: number;
   companyId: number;
 } & {
-  [key in SystemModules]: number;
+  [key in SystemModules]: boolean;
 };
